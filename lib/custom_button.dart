@@ -14,7 +14,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints.tightFor(width: 150),
+      constraints: const BoxConstraints.tightFor(width: 150),
       child: ElevatedButton(
         onPressed: onPressed,
         child: Text(
@@ -22,7 +22,7 @@ class CustomButton extends StatelessWidget {
           style: TextStyle(fontSize: 30),
         ),
         style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.all(20), primary: color),
+            padding: const EdgeInsets.all(20), primary: color),
       ),
     );
   }

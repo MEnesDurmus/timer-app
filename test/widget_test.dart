@@ -11,14 +11,13 @@ import 'package:redux/redux.dart';
 
 import 'package:timer_app/main.dart';
 import 'package:timer_app/redux/app_state.dart';
-import 'package:timer_app/redux/middleware.dart';
 import 'package:timer_app/redux/reducers.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    final store = Store<AppState>(appReducer,
-        initialState: AppState.initialState(), middleware: [AppMiddleware()]);
+    final store =
+        Store<AppState>(appReducer, initialState: AppState.initialState());
     await tester.pumpWidget(MyApp(store: store));
 
     // Verify that our counter starts at 0.

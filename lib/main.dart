@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:timer_app/redux/app_state.dart';
-import 'package:timer_app/redux/middleware.dart';
 import 'package:timer_app/redux/reducers.dart';
 import 'package:timer_app/timer_page.dart';
 
 void main() {
-  final store = Store<AppState>(appReducer,
-      initialState: AppState.initialState(), middleware: [AppMiddleware()]);
+  final store =
+      Store<AppState>(appReducer, initialState: AppState.initialState());
   runApp(MyApp(
     store: store,
   ));
