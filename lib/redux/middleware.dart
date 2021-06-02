@@ -10,9 +10,6 @@ class AppMiddleware implements MiddlewareClass<AppState> {
       store.state.timer?.cancel();
       store.dispatch(PauseTimerActionCleaned());
     }
-    // if (action is ResumeTimerAction) {
-    //   store.dispatch(ResumeTimerActionCleaned(startTimer(store)));
-    // }
     next(action);
   }
 }

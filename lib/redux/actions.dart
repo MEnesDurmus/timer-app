@@ -2,11 +2,6 @@ import 'dart:async';
 
 abstract class Action {}
 
-class TimerChangedAction extends Action {
-  final Duration changedtimer;
-  TimerChangedAction(this.changedtimer);
-}
-
 class TimerCountdownAction extends Action {
   final Duration timeLeft;
   TimerCountdownAction(this.timeLeft);
@@ -32,7 +27,5 @@ class ResumeTimerAction extends Action {
 }
 
 class PauseTimerActionCleaned extends Action {}
-
-class ResumeTimerActionCleaned extends Action {}
 
 typedef void MyFunction();
