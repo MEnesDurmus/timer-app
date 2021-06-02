@@ -6,9 +6,10 @@ AppState appReducer(AppState state, dynamic action) {
     return AppState(initialtimer: action.changedtimer);
   if (action is StartTimerAction) {
     return AppState(
-      initialtimer: state.initialtimer,
+      initialtimer: action.initialTimer,
       cancelFunction: action.cancelFunction,
-      timeLeft: state.initialtimer,
+      timeLeft: action.initialTimer,
+      timer: action.timer,
     );
   }
   if (action is StopTimerAction) {
@@ -19,10 +20,17 @@ AppState appReducer(AppState state, dynamic action) {
     );
   }
   if (action is TimerCountdownAction) {
-    return AppState(
-        initialtimer: state.initialtimer,
-        timeLeft: action.timeLeft,
-        cancelFunction: state.cancelFunction);
+    return AppState.fromState(state, timeLeft: action.timeLeft);
+  }
+  if (action is PauseTimerActionCleaned) {
+    return AppState.fromState(state, isPaused: !state.isPaused);
+  }
+  if (action is ResumeTimerAction) {
+    return AppState.fromState(
+      state,
+      isPaused: !state.isPaused,
+      timer: action.timer,
+    );
   }
   return state;
 }

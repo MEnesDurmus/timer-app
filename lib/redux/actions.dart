@@ -13,13 +13,26 @@ class TimerCountdownAction extends Action {
 }
 
 class StartTimerAction extends Action {
+  final Duration initialTimer;
   final MyFunction cancelFunction;
   final Timer timer;
-  StartTimerAction(this.cancelFunction, this.timer);
+  StartTimerAction(this.initialTimer, this.cancelFunction, this.timer);
 }
 
 class StopTimerAction extends Action {
   StopTimerAction();
 }
+
+class PauseTimerAction extends Action {}
+
+class ResumeTimerAction extends Action {
+  final Timer timer;
+
+  ResumeTimerAction(this.timer);
+}
+
+class PauseTimerActionCleaned extends Action {}
+
+class ResumeTimerActionCleaned extends Action {}
 
 typedef void MyFunction();

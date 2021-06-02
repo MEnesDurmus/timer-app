@@ -5,11 +5,14 @@ class AppState {
   final Function()? cancelFunction;
   final Duration timeLeft;
   final Timer? timer;
-  AppState(
-      {required this.initialtimer,
-      this.cancelFunction,
-      this.timeLeft = const Duration(),
-      this.timer});
+  final bool isPaused;
+  AppState({
+    required this.initialtimer,
+    this.cancelFunction,
+    this.timeLeft = const Duration(),
+    this.timer,
+    this.isPaused = false,
+  });
 
   bool get isStarted {
     return cancelFunction != null;
@@ -18,7 +21,7 @@ class AppState {
   String get timeLeftinString {
     int inSeconds = timeLeft.inSeconds;
     String hours = (inSeconds / 3600).floor().to2Digits();
-    String minutes = (inSeconds / 60).floor().to2Digits();
+    String minutes = ((inSeconds % 3600) / 60).floor().to2Digits();
     String seconds = (inSeconds % 60).to2Digits();
     if (inSeconds >= 3600)
       return "$hours:$minutes:$seconds";
@@ -26,11 +29,29 @@ class AppState {
       return "$minutes:$seconds";
   }
 
+  factory AppState.fromState(
+    AppState state, {
+    Duration? initialtimer,
+    Function()? cancelFunction,
+    Duration? timeLeft,
+    Timer? timer,
+    bool? isPaused,
+  }) {
+    return AppState(
+      initialtimer: initialtimer ?? state.initialtimer,
+      cancelFunction: cancelFunction ?? state.cancelFunction,
+      timeLeft: timeLeft ?? state.timeLeft,
+      timer: timer ?? state.timer,
+      isPaused: isPaused ?? state.isPaused,
+    );
+  }
+
   AppState.initialState()
       : initialtimer = Duration(),
         cancelFunction = null,
         timeLeft = Duration(),
-        timer = null;
+        timer = null,
+        isPaused = false;
 }
 
 extension IntParsing on int {
