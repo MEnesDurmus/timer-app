@@ -1,19 +1,44 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 import 'package:timer_app/custom_button.dart';
 import 'package:timer_app/methods.dart';
 import 'package:timer_app/redux/actions.dart';
 import 'package:timer_app/redux/app_state.dart';
 
 class TimerPage extends StatelessWidget {
-  Color getColor(AppState state) {
+  static Duration time = new Duration();
+
+  CustomButton getButton(Store<AppState> store) {
+    var state = store.state;
     if (!state.isStarted)
-      return Colors.blueAccent;
+      return CustomButton(
+        text: 'Start',
+        color: Colors.blueAccent,
+        onPressed: () {
+          if (time.inMinutes == 0) return;
+          store.dispatch(StartTimerAction(time, () {
+            store.dispatch(StopTimerAction());
+          }, startTimer(store)));
+        },
+      );
     else if (!state.isPaused)
-      return Colors.orangeAccent;
+      return CustomButton(
+        text: 'Pause',
+        color: Colors.orangeAccent,
+        onPressed: () {
+          store.dispatch(PauseTimerAction());
+        },
+      );
     else
-      return Colors.blueAccent;
+      return CustomButton(
+        text: 'Resume',
+        color: Colors.blueAccent,
+        onPressed: () {
+          store.dispatch(ResumeTimerAction(startTimer(store)));
+        },
+      );
   }
 
   @override
@@ -40,7 +65,7 @@ class TimerPage extends StatelessWidget {
                         secondInterval: 1,
                         initialTimerDuration: state.initialtimer,
                         onTimerDurationChanged: (Duration changedtimer) {
-                          InitialTimer.time = changedtimer;
+                          time = changedtimer;
                         },
                       ),
               ),
@@ -55,29 +80,7 @@ class TimerPage extends StatelessWidget {
                       color: Colors.redAccent,
                       onPressed: state.cancelFunction,
                     ),
-                    CustomButton(
-                      text: (() {
-                        if (!state.isStarted)
-                          return 'Start';
-                        else if (!state.isPaused)
-                          return 'Pause';
-                        else
-                          return 'Resume';
-                      }()),
-                      color: getColor(state),
-                      onPressed: () {
-                        if (!state.isStarted) {
-                          if (InitialTimer.time.inMinutes == 0) return;
-                          store
-                              .dispatch(StartTimerAction(InitialTimer.time, () {
-                            store.dispatch(StopTimerAction());
-                          }, startTimer(store)));
-                        } else if (!state.isPaused)
-                          store.dispatch(PauseTimerAction());
-                        else
-                          store.dispatch(ResumeTimerAction(startTimer(store)));
-                      },
-                    )
+                    getButton(store)
                   ],
                 ),
               )
@@ -85,8 +88,4 @@ class TimerPage extends StatelessWidget {
           );
         });
   }
-}
-
-class InitialTimer {
-  static Duration time = new Duration();
 }
